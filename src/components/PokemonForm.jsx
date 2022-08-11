@@ -208,7 +208,7 @@ const PokemonForm = (props) => {
         </div>
       </div>
       <div style={classes.optionsButtonContainer}>
-        <button type="button" style={classes.styledButton} disabled={true} onClick={addPokemonToList}>
+        <button type="button" style={classes.styledButton} disabled={!namePokemon && !urlImage } onClick={addPokemonToList}>
           <div style={classes.insideButtonContainer}>
             <SaveSVG width="15px" height="15px" /> 
             <p style={classes.buttonText}>Guardar</p>
