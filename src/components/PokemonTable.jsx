@@ -56,11 +56,18 @@ const useStyles = () => ({
 
 
 const PokemmonTable = (props) => {
+
   const classes = useStyles()
-  const { pokemonsList } = props
+  const { 
+    pokemonsList,
+    setPokemonInfo
+  } = props
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
+
+
+ 
   const deletePokemon = (data) => {
     const requestOptions = {
       method: 'DELETE',
@@ -114,6 +121,7 @@ const PokemmonTable = (props) => {
                             return pokemon.id === Number(currentPokemon);
                           });
                           console.log({...datatoEdit})
+                          setPokemonInfo(datatoEdit)
                           // handlePokemonData({ ...datatoEdit });
                         }}
                       >
@@ -126,7 +134,6 @@ const PokemmonTable = (props) => {
                           const datatoEdit = pokemonsList.find((pokemon) => {
                             return pokemon.id === Number(currentPokemon);
                           });
-                          console.log(datatoEdit)
                           deletePokemon(datatoEdit)
                         }}
                       >

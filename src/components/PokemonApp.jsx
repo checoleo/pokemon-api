@@ -40,6 +40,7 @@ const Pokedex = () => {
 
   const [closePokeForm, setClosePokeForm] = useState(false)
 
+  const [pokemonInfo, setPokemonInfo] = useState({})
 
   useEffect(() => {
     fetch("https://bp-pokemons.herokuapp.com/?idAuthor=1")
@@ -76,6 +77,7 @@ const Pokedex = () => {
       <div>
       {pokemonsList &&
         <PokemonTable
+        setPokemonInfo={setPokemonInfo}
         pokemonsList={
           pokemonsList.filter((pokemon) => {
             if (searchPokemon) {
@@ -93,7 +95,7 @@ const Pokedex = () => {
       <PokemonForm
         closePokeForm={closePokeForm}
         setClosePokeForm={setClosePokeForm}
-        
+        pokemonInfo={pokemonInfo}
       />
     </div>
   )
