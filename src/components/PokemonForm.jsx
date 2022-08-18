@@ -82,54 +82,84 @@ const useStyles = () => ({
 })
 
 const PokemonForm = (props) => {
-  const {closePokeForm} = props
+  const {
+    closePokeForm, 
+    pokemonInfo
+
+  } = props
   const classes = useStyles(closePokeForm)
 
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-
+  console.log(pokemonInfo, "info")
   const [namePokemon, setNamePokemon] = useState("");
   const [urlImage, setUrlImage] = useState("");
-  const [attackPokemon, setAttackPokemon] = useState(0);
-  const [defensePokemon, setDefensePokemon] = useState(0);
+  const [attackPokemon, setAttackPokemon] = useState();
+  const [defensePokemon, setDefensePokemon] = useState();
+  const [pokemonId, setPokemonId] = useState(0)
 
-  // useEffect(()=>{
-  //   if(closePokeForm){
-  //     return(
-  //       { display: "none" }
-  //     )
-  //   } else {
-  //     return(
-  //       { display: "none" }
-  //     )
-  //   }
-  // },[])
+  useEffect(()=>{
+    setNamePokemon(pokemonInfo.name)
+    setUrlImage(pokemonInfo.image)
+    setAttackPokemon(pokemonInfo.attack )
+    setDefensePokemon(pokemonInfo.defense)
+    setPokemonId(pokemonInfo.id)
+  },[pokemonInfo])
 
   const addPokemonToList = () => {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        name: `${namePokemon}`, 
-        image: `${urlImage}`,
-        attack: attackPokemon,
-        defense: defensePokemon,
-        hp: 100,
-        type: "lucha",
-        idAuthor: 1,
-      })
-    };
-    fetch('https://bp-pokemons.herokuapp.com/?idAuthor=1', requestOptions)
-      .then(response => response.json())
-      .then(
-        (result) =>{
-          console.log(result,")))FETCH(((")
-        },
-        (error) => {
-          setIsLoaded(true);
-          setError(error);
-        }
-      )
+ 
+    if(pokemonInfo){
+      const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          name: `${namePokemon}`, 
+          image: `${urlImage}`,
+          attack: attackPokemon,
+          defense: defensePokemon,
+          hp: 50,
+          type: "lucha",
+          id: pokemonId,
+          idAuthor: 1,
+        })
+      };
+      fetch(`https://bp-pokemons.herokuapp.com/:${pokemonId}`, requestOptions)
+        .then(response => response.json())
+        .then(
+          (result) =>{
+            console.log(result,")))UPDATE(((")
+          },
+          (error) => {
+            setIsLoaded(true);
+            setError(error);
+          }
+        )
+    }else{
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          name: `${namePokemon}`, 
+          image: `${urlImage}`,
+          attack: attackPokemon,
+          defense: defensePokemon,
+          hp: 100,
+          type: "lucha",
+          idAuthor: 1,
+        })
+      };
+      fetch('https://bp-pokemons.herokuapp.com/?idAuthor=1', requestOptions)
+        .then(response => response.json())
+        .then(
+          (result) =>{
+            console.log(result,")))FETCH(((")
+          },
+          (error) => {
+            setIsLoaded(true);
+            setError(error);
+          }
+        )
+    }
   }
   
   const handleName = (event) => {
@@ -160,6 +190,7 @@ const PokemonForm = (props) => {
         <div style={classes.inputTextContainer}>
           <label style={classes.labelText}>Nombre:</label>
           <input 
+            value={namePokemon}
             type="text" 
             id="name" 
             name="name" 
@@ -171,6 +202,7 @@ const PokemonForm = (props) => {
           <h4 style={classes.marginText}>Ataque:</h4>
           <h4 style={classes.marginText}>0</h4>
           <input 
+            value={attackPokemon}
             type="range" 
             min="0" 
             max="100" 
@@ -184,7 +216,8 @@ const PokemonForm = (props) => {
       <div style={classes.statusContainer}>
         <div style={classes.inputTextContainer}>
           <label style={classes.labelText}>Imagen:</label>
-          <input 
+          <input
+            value={urlImage || ""}
             type="text" 
             id="image" 
             name="image" 
@@ -197,6 +230,7 @@ const PokemonForm = (props) => {
           <h4 style={classes.marginText}>Defensa:</h4>
           <h4 style={classes.marginText}>0</h4>
           <input 
+            value={defensePokemon}
             type="range" 
             min="0" 
             max="100" 
@@ -208,7 +242,7 @@ const PokemonForm = (props) => {
         </div>
       </div>
       <div style={classes.optionsButtonContainer}>
-        <button type="button" style={classes.styledButton} disabled={!namePokemon && !urlImage } onClick={addPokemonToList}>
+        <button type="button" style={classes.styledButton} onClick={addPokemonToList}>
           <div style={classes.insideButtonContainer}>
             <SaveSVG width="15px" height="15px" /> 
             <p style={classes.buttonText}>Guardar</p>
