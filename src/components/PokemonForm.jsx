@@ -96,7 +96,7 @@ const PokemonForm = (props) => {
   const [urlImage, setUrlImage] = useState("");
   const [attackPokemon, setAttackPokemon] = useState();
   const [defensePokemon, setDefensePokemon] = useState();
-  const [pokemonId, setPokemonId] = useState(pokemonInfo.id || 0)
+  const [pokemonId, setPokemonId] = useState(0)
 
   useEffect(()=>{
     setNamePokemon(pokemonInfo.name)
@@ -242,11 +242,7 @@ const PokemonForm = (props) => {
         </div>
       </div>
       <div style={classes.optionsButtonContainer}>
-<<<<<<< Updated upstream
-        <button type="button" style={classes.styledButton} disabled={true} onClick={addPokemonToList}>
-=======
         <button type="button" style={classes.styledButton} onClick={addPokemonToList}>
->>>>>>> Stashed changes
           <div style={classes.insideButtonContainer}>
             <SaveSVG width="15px" height="15px" /> 
             <p style={classes.buttonText}>Guardar</p>
